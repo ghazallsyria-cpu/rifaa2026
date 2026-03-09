@@ -49,7 +49,6 @@ export default function StudentHomework() {
           <p className="page-subtitle">{mockHomework.filter(h => h.status === "pending" || h.status === "late").length} واجبات تحتاج تسليماً</p>
         </div>
 
-        {/* Filter Tabs */}
         <div className="flex gap-2 bg-white dark:bg-gray-800 p-1.5 rounded-2xl border border-gray-100 dark:border-gray-700 w-fit shadow-sm">
           {["الكل", "معلق", "مُسلَّم", "مُصحَّح"].map(tab => (
             <button key={tab} className="px-4 py-2 rounded-xl text-sm font-semibold transition-all first:bg-primary-500 first:text-white hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400">
@@ -90,7 +89,7 @@ export default function StudentHomework() {
                       <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">درجتك</span>
                       <span className="font-black text-emerald-700 dark:text-emerald-400">{hw.grade}/{hw.maxGrade}</span>
                     </div>
-                    {hw.feedback && <p className="text-xs text-emerald-600 dark:text-emerald-500 italic">"{hw.feedback}"</p>}
+                    {hw.feedback && <p className="text-xs text-emerald-600 dark:text-emerald-500 italic">&quot;{hw.feedback}&quot;</p>}
                   </div>
                 )}
                 {(hw.status === "pending" || hw.status === "late") && (
@@ -104,7 +103,6 @@ export default function StudentHomework() {
           })}
         </div>
 
-        {/* Submit Modal */}
         {activeHw && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setActiveHw(null)} />
