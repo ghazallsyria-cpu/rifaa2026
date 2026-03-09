@@ -64,7 +64,7 @@ export default function TeacherGrades() {
     loadGrades(); setSaving(false);
   }
   // Unique classes from assignments
-  const myClasses = [...new Map(assignments.map(a=>[a.class_id, a.classes])).values()];
+  const myClasses = Array.from(new Map(assignments.map(a=>[a.class_id, a.classes])).values());
   const mySubjects = assignments.filter(a=>a.class_id===selectedClass).map(a=>a.subjects);
   const filtered = students.filter(s => !search || s.full_name.includes(search));
   if (loading) return <DashboardLayout><div className="flex items-center justify-center h-64"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{borderColor:"#c9970c",borderTopColor:"transparent"}}/></div></DashboardLayout>;
