@@ -1,0 +1,204 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    font-family: "Cairo", sans-serif;
+  }
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+  :root {
+    --text-1: #0a0a0a;
+    --text-2: #374151;
+    --text-3: #9ca3af;
+    --surface: #ffffff;
+    --surface-2: #f9fafb;
+    --border: 220 13% 91%;
+    --radius: 0.75rem;
+    --gold: #c9970c;
+  }
+  .dark {
+    --text-1: #f1f5f9;
+    --text-2: #cbd5e1;
+    --text-3: #64748b;
+    --surface: #1e293b;
+    --surface-2: #0f172a;
+    --border: 215 28% 17%;
+  }
+}
+
+@layer components {
+  /* Cards */
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm;
+  }
+
+  /* Stat cards */
+  .stat-card {
+    @apply bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-5 shadow-sm;
+  }
+
+  /* Input */
+  .input-field {
+    @apply w-full rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-2.5 text-sm text-gray-800 dark:text-gray-200 outline-none transition-all focus:ring-2 focus:ring-yellow-500/30 focus:border-yellow-500;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply bg-yellow-600 hover:bg-yellow-700 text-white font-bold rounded-xl px-5 py-2.5 text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn {
+    @apply font-semibold rounded-xl px-4 py-2 text-sm transition-colors;
+  }
+  .btn-secondary {
+    @apply bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300;
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+
+  /* Tabs */
+  .tabs {
+    @apply flex gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl;
+  }
+  .tab {
+    @apply px-4 py-1.5 rounded-lg text-sm font-semibold transition-all text-gray-500 dark:text-gray-400;
+  }
+  .tab.active {
+    @apply bg-white dark:bg-gray-700 text-gray-800 dark:text-white shadow-sm;
+  }
+
+  /* Table */
+  .data-table {
+    @apply w-full;
+  }
+  .data-table thead tr {
+    @apply bg-gray-50 dark:bg-gray-800/50;
+    border-bottom: 2px solid #e5e7eb;
+  }
+  .data-table th {
+    @apply px-4 py-3 text-right text-xs font-black text-gray-400;
+  }
+  .data-table td {
+    @apply px-4 py-3 text-sm;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .data-table tr:hover {
+    @apply bg-gray-50/50 dark:bg-gray-700/20;
+  }
+
+  /* Section headers */
+  .section-title {
+    @apply font-black text-sm;
+    color: var(--text-1);
+  }
+  .section-sub {
+    @apply text-xs mt-0.5;
+    color: var(--text-3);
+  }
+  .section-header {
+    @apply flex items-center justify-between mb-4;
+  }
+
+  /* Page titles */
+  .page-title {
+    @apply text-2xl font-black text-gray-900 dark:text-white;
+  }
+  .page-subtitle {
+    @apply text-sm mt-1 text-gray-400;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    @apply w-full h-1.5 rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden;
+  }
+  .progress-fill {
+    @apply h-full rounded-full transition-all;
+  }
+
+  /* Spinner */
+  .spinner {
+    @apply w-10 h-10 border-4 rounded-full animate-spin;
+    border-color: #c9970c;
+    border-top-color: transparent;
+  }
+
+  /* Attendance buttons */
+  .att-btn {
+    @apply px-2.5 py-1 rounded-lg text-xs font-bold border transition-all;
+  }
+
+  /* Empty state */
+  .empty-state {
+    @apply text-center py-16;
+  }
+  .empty-state-icon {
+    @apply text-5xl mb-3;
+  }
+  .empty-state-title {
+    @apply text-lg font-black;
+    color: var(--text-1);
+  }
+  .empty-state-sub {
+    @apply text-sm mt-1;
+    color: var(--text-3);
+  }
+
+  /* Notification card */
+  .notif-card {
+    @apply p-4 rounded-xl border transition-all;
+    background: var(--surface);
+    border-color: hsl(var(--border));
+    border-right-width: 3px;
+  }
+  .notif-card.unread {
+    @apply bg-yellow-50/50 dark:bg-yellow-900/10;
+  }
+
+  /* Chart tooltip */
+  .chart-tooltip {
+    @apply rounded-xl p-3 text-sm;
+    background: #0a0a0a;
+    border: 1px solid rgba(184, 134, 11, 0.3);
+    color: #fff;
+  }
+
+  /* Card hover */
+  .card-hover {
+    @apply transition-all hover:shadow-md hover:-translate-y-0.5;
+  }
+
+  /* Table container */
+  .table-container {
+    @apply bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden;
+  }
+
+  /* Scrollbar thin */
+  .scrollbar-thin::-webkit-scrollbar {
+    height: 4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+  }
+}
+
+@layer utilities {
+  .animate-fade-up {
+    animation: fadeUp 0.4s ease-out;
+  }
+}
