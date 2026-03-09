@@ -6,7 +6,9 @@ import { supabase } from "@/hooks/useData";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Users, BookOpen, Award, Clock, ChevronLeft } from "lucide-react";
 import Link from "next/link";
+
 const GOLD = "#c9970c";
+
 export default function TeacherDashboard() {
   const { user } = useAuth();
   const [assignments, setAssignments] = useState<any[]>([]);
@@ -14,18 +16,23 @@ export default function TeacherDashboard() {
   const [gradesCount, setGradesCount] = useState(0);
   const [classAvgs, setClassAvgs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => { if (user?.id) load(); }, [user]);
+
   async function load() {
     const { data: asgns } = await supabase.from("teacher_class_subjects").select("*, classes(*), subjects(*)").eq("teacher_id", user!.id);
     setAssignments(asgns || []);
+
     // Unique classes
-    const myClasses = Array.from(new Set((asgns || []).map((a: any) => a.class_id)));
+    const classIds = Array.from(new Set((asgns || []).map((a: any) => a.class_id)));
     if (classIds.length > 0) {
       const { count } = await supabase.from("student_profiles").select("*", { count: "exact", head: true }).in("class_id", classIds);
       setStudentsCount(count || 0);
+
       // Grades count by teacher
       const { count: gc } = await supabase.from("grades").select("*", { count: "exact", head: true }).eq("teacher_id", user!.id);
       setGradesCount(gc || 0);
+
       // Avg per class
       const avgs = [];
       for (const cid of classIds) {
@@ -44,9 +51,26 @@ export default function TeacherDashboard() {
     }
     setLoading(false);
   }
+
   const myClasses = [...new Map(assignments.map(a => [a.class_id, a.classes])).values()];
-  const Tip = ({ active, payload, label }: any) => active && payload?.length ? <div className="rounded-xl p-3 text-sm" style={{ background: "#0a0a0a", border: "1px solid rgba(184,134,11,0.3)", color: "#fff" }}><p style={{ color: GOLD }}>{label}</p>{payload.map((p: any) => <p key={p.name}>{p.name}: <strong>{p.value}%</strong></p>)}</div> : null;
-  if (loading) return <DashboardLayout><div className="flex items-center justify-center h-64"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: GOLD, borderTopColor: "transparent" }} /></div></DashboardLayout>;
+
+  const Tip = ({ active, payload, label }: any) =>
+    active && payload?.length ? (
+      <div className="rounded-xl p-3 text-sm" style={{ background: "#0a0a0a", border: "1px solid rgba(184,134,11,0.3)", color: "#fff" }}>
+        <p style={{ color: GOLD }}>{label}</p>
+        {payload.map((p: any) => <p key={p.name}>{p.name}: <strong>{p.value}%</strong></p>)}
+      </div>
+    ) : null;
+
+  if (loading)
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: GOLD, borderTopColor: "transparent" }} />
+        </div>
+      </DashboardLayout>
+    );
+
   return (
     <DashboardLayout>
       <div className="space-y-6" dir="rtl">
@@ -54,6 +78,7 @@ export default function TeacherDashboard() {
           <h1 className="text-2xl font-black" style={{ color: "#0a0a0a" }}>أهلاً، {user?.full_name?.split(" ")[0]}</h1>
           <p className="text-sm mt-1" style={{ color: "#888" }}>لوحة المعلم — العام الدراسي 2025/2026</p>
         </div>
+
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[
@@ -65,13 +90,16 @@ export default function TeacherDashboard() {
             const Icon = s.icon;
             return (
               <div key={s.label} className="rounded-2xl p-5" style={{ background: "#fff", border: "1px solid #e8e8e8" }}>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: s.color + "15" }}><Icon size={18} style={{ color: s.color }} /></div>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: s.color + "15" }}>
+                  <Icon size={18} style={{ color: s.color }} />
+                </div>
                 <div className="text-3xl font-black" style={{ color: "#0a0a0a" }}>{s.value}</div>
                 <div className="text-xs mt-1" style={{ color: "#888" }}>{s.label}</div>
               </div>
             );
           })}
         </div>
+
         {/* My classes */}
         <div className="rounded-2xl p-6" style={{ background: "#fff", border: "1px solid #e8e8e8" }}>
           <div className="flex items-center justify-between mb-4">
@@ -100,6 +128,7 @@ export default function TeacherDashboard() {
             </div>
           )}
         </div>
+
         {/* Chart */}
         {classAvgs.length > 0 && (
           <div className="rounded-2xl p-6" style={{ background: "#fff", border: "1px solid #e8e8e8" }}>
