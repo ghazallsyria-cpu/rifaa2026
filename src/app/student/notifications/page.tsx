@@ -24,7 +24,6 @@ export default function StudentNotifications() {
 
   async function load() {
     setLoading(true);
-    // Get notifications for student (all + student role + their class)
     const { data: notifs } = await supabase
       .from("notifications")
       .select("*")
@@ -32,7 +31,6 @@ export default function StudentNotifications() {
       .order("created_at", { ascending: false })
       .limit(50);
 
-    // Get read status
     const { data: reads } = await supabase
       .from("notification_reads")
       .select("notification_id")
@@ -46,7 +44,9 @@ export default function StudentNotifications() {
   async function markRead(notifId: string) {
     if (readIds.has(notifId)) return;
     await supabase.from("notification_reads").upsert({ notification_id: notifId, user_id: user!.national_id || user!.id });
-    setReadIds(prev => new Set([...prev, notifId]));
+
+    // تعديل هنا لاستخدام Array.from
+    setReadIds(prev => new Set(Array.from(prev).concat(notifId)));
   }
 
   async function markAllRead() {
@@ -89,7 +89,13 @@ export default function StudentNotifications() {
         </div>
 
         {notifications.length === 0 ? (
-          <div className="card"><div className="empty-state"><div className="empty-state-icon">🔕</div><div className="empty-state-title">لا توجد إشعارات</div><div className="empty-state-sub">ستظهر هنا الإشعارات من المعلمين والإدارة</div></div></div>
+          <div className="card">
+            <div className="empty-state">
+              <div className="empty-state-icon">🔕</div>
+              <div className="empty-state-title">لا توجد إشعارات</div>
+              <div className="empty-state-sub">ستظهر هنا الإشعارات من المعلمين والإدارة</div>
+            </div>
+          </div>
         ) : (
           <div className="space-y-2">
             {notifications.map(n => {
