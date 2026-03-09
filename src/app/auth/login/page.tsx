@@ -15,36 +15,22 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
     try {
-      // جلب المستخدم حسب رقم الهوية فقط
-      const { data: user, error: fetchErr } = await supabase
+      const { data, error: qErr } = await supabase
         .from("users")
         .select("*")
         .eq("national_id", nationalId)
+        .eq("password_hash", password)
         .single();
-
-      if (fetchErr || !user) {
+      if (qErr || !data) {
         setError("رقم الهوية أو كلمة المرور غير صحيحة");
         setLoading(false);
         return;
       }
-
-      // التحقق من كلمة المرور باستخدام bcrypt
-      const bcrypt = await import("bcryptjs");
-      const valid = await bcrypt.compare(password, user.password_hash);
-
-      if (!valid) {
-        setError("رقم الهوية أو كلمة المرور غير صحيحة");
-        setLoading(false);
-        return;
-      }
-
-      localStorage.setItem("rifa_user", JSON.stringify(user));
-
+      localStorage.setItem("rifa_user", JSON.stringify(data));
       const dest =
-        user.role === "teacher" ? "/teacher"
-        : user.role === "admin" ? "/admin"
+        data.role === "teacher" ? "/teacher"
+        : data.role === "admin" ? "/admin"
         : "/student";
-
       window.location.href = dest;
     } catch {
       setError("حدث خطأ، يرجى المحاولة مجدداً");
