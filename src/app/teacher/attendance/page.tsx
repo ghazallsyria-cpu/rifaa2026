@@ -75,10 +75,9 @@ export default function TeacherAttendance() {
     setTimeout(() => setMsg(""), 3000);
   }
 
-  const myClasses = [...new Map(assignments.map(a => [a.class_id, a.classes])).values()];
+  const myClasses = Array.from(new Map(assignments.map(a => [a.class_id, a.classes])).values());
   const counts = STATUSES.reduce((acc, s) => ({ ...acc, [s]: Object.values(statusMap).filter(v => v === s).length }), {} as Record<string, number>);
 
-  // Stats from history
   const byStudent = () => {
     const map: Record<string, any> = {};
     classHistory.forEach(a => {
