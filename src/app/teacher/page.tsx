@@ -19,7 +19,7 @@ export default function TeacherDashboard() {
     const { data: asgns } = await supabase.from("teacher_class_subjects").select("*, classes(*), subjects(*)").eq("teacher_id", user!.id);
     setAssignments(asgns || []);
     // Unique classes
-    const classIds = [...new Set((asgns || []).map((a: any) => a.class_id))];
+    const myClasses = Array.from(new Set((asgns || []).map((a: any) => a.class_id)));
     if (classIds.length > 0) {
       const { count } = await supabase.from("student_profiles").select("*", { count: "exact", head: true }).in("class_id", classIds);
       setStudentsCount(count || 0);
